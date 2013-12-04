@@ -11,4 +11,5 @@
         <li><a href="{{ path('_demo_secured_hello', {'name': 'World'}) }}">Access the secured area</a> <a href="{{ path('_demo_login') }}">Go to the login page</a></li>
         {# <li><a href="{{ path('_demo_contact') }}">Send a Message</a></li> #}
     </ul>
+    {{ form(form) }}
 {% endblock %}
