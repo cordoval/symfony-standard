@@ -9,7 +9,8 @@
 
     <h1 class="title">Welcome!</h1>
 
-    <p>{{ 'acme.hello.world'|trans }}Congratulations! You have successfully installed a new Symfony application.</p>
+    {% set test = 'luis' %}
+    <p>{{ (test~'test')|trans }}{{ 'acme.hello.world'|trans }}Congratulations! You have successfully installed a new Symfony application.</p>
 
     <div class="symfony-blocks-welcome">
         <div class="block-quick-tour">
