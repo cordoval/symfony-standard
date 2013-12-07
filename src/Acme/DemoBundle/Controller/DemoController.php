@@ -17,9 +17,9 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return array();
+        return array('host' => $request->getHost());
     }
 
     /**
