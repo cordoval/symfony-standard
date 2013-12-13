@@ -2,6 +2,9 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Acme\DemoBundle\Entity\Category;
+use Acme\DemoBundle\Entity\Ship;
+use Acme\DemoBundle\Form\ShipType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +22,14 @@ class DemoController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $ship = new Ship();
+        $cat = new Category();
+        $cat->setName('cat1');
+        $ship->setCategory($cat);
+        $ship->setShipName('some ship');
+        $form = $this->createForm(new ShipType(), $ship);
+
+        return array('form' => $form->createView());
     }
 
     /**
