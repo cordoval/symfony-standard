@@ -2,6 +2,7 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Acme\DemoBundle\Form\RegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,14 @@ class DemoController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $form = $this->createFormBuilder()
+            ->add('registration', new RegistrationType())
+            ->add('security',new RegistrationType())
+            ->add('submit', 'submit', array('label' => 'Reg.Continue'))
+            ->getForm()
+        ;
+
+        return array('form' => $form->createView());
     }
 
     /**
