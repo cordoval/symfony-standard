@@ -1,0 +1,18 @@
+Acme\DemoBundle\Entity\User:
+  type: entity
+  #repositoryClass: Doctrine\Tests\ORM\Mapping\UserRepository
+  table: user
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    signedIn:
+      type: datetime
+#  oneToOne:
+#    address:
+#      targetEntity: Address
+#      joinColumn:
+#        name: address_id
+#        referencedColumnName: id

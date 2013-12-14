@@ -2,6 +2,8 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,44 @@ class DemoController extends Controller
      */
     public function indexAction()
     {
+        /** @var \Doctrine\ORM\EntityRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository('AcmeDemoBundle:User');
+        $date = '2013-12-02';
+        $dateFrom = new \DateTime ($date);
+        $dateTo = (new \DateTime ($date))->add(new \DateInterval('P1D'));
+
+        // OK
+        $criteria = new Criteria();
+        $criteria
+            ->where($criteria->expr()->gte('signedIn', $dateFrom))
+            ->andWhere($criteria->expr()->lt('signedIn', $dateTo))
+        ;
+        //var_dump($userRepository->matching($criteria));
+
+        // NOT OK - Doctrine\ORM\Query\QueryException "Invalid parameter number: number of bound variables does not match number of tokens"
+        $criteria = new Criteria();
+        $criteria
+            ->where($criteria->expr()->gte('user.signedIn', $dateFrom))
+            ->andWhere($criteria->expr()->lt('user.signedIn', $dateTo))
+        ;
+        var_dump($userRepository->createQueryBuilder('user')
+            ->addCriteria($criteria)
+            ->getQuery()
+            //->getResult()
+        );
+die();
+        // NOT OK - Doctrine\ORM\Query\QueryException "Invalid parameter number: number of bound variables does not match number of tokens"
+        $criteria
+            ->where($criteria->expr ()->eq('user.active', true))
+            ->andWhere($criteria->expr()->eq('user.active', true))
+            //->orWhere ($criteria->expr ()->eq ('user.active', true))
+        ;
+        var_dump($userRepository->createQueryBuilder('user')
+            ->addCriteria($criteria)
+            ->getQuery()
+            ->getResult()
+        );
+
         return array();
     }
 
