@@ -40,16 +40,18 @@ class DemoController extends Controller
         $criteria
             ->where($criteria->expr()->gte('user.signedIn', $dateFrom))
             ->andWhere($criteria->expr()->lt('user.signedIn', $dateTo))
+            ->orWhere ($criteria->expr()->eq ('user.signedIn', true))
         ;
         var_dump($userRepository->createQueryBuilder('user')
             ->addCriteria($criteria)
             ->getQuery()
-            //->getResult()
-        );
-die();
+            ->getResult()
+        )
+        ;die();
+
         // NOT OK - Doctrine\ORM\Query\QueryException "Invalid parameter number: number of bound variables does not match number of tokens"
         $criteria
-            ->where($criteria->expr ()->eq('user.active', true))
+            ->where($criteria->expr()->eq('user.active', true))
             ->andWhere($criteria->expr()->eq('user.active', true))
             //->orWhere ($criteria->expr ()->eq ('user.active', true))
         ;
