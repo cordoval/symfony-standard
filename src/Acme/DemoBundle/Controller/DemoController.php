@@ -2,6 +2,8 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Acme\DemoBundle\Entity\Participant;
+use Acme\DemoBundle\Form\ParticipantType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,27 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return array();
+        $participant = new Participant();
+        $participant->addEmail('1@gmail.com');
+        $participant->addEmail('2@gmail.com');
+        $participant->addEmail('3@gmail.com');
+        $participant->addEmail('4@gmail.com');
+        $participant->addEmail('5@gmail.com');
+        $participant->addEmail('6@gmail.com');
+
+        $form = $this->createForm(new ParticipantType(), $participant, array());
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+        }
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
