@@ -2,6 +2,8 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Acme\DemoBundle\Entity\X;
+use Acme\DemoBundle\Form\XType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,23 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return array();
+        $validator = $this->get('validator');
+        $entityX = new X();
+        $entityX->setDateBirth(new \DateTime('now'));
+        $form = $this->createForm(new XType(), $entityX);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $validationErrors = $validator->validate($form->getData());
+            var_dump($validationErrors);
+            $request->getSession()->getFlashBag()->set('notice', 'Form submitted!');
+
+            //return new RedirectResponse($this->generateUrl('_demo'));
+        }
+
+        return array('form' => $form->createView());
     }
 
     /**
