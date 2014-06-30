@@ -2,6 +2,8 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Acme\DemoBundle\Entity\Page;
+use Acme\DemoBundle\Form\PageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,19 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return array();
+        $form = $this->createForm(new PageType(), new Page(), array());
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+        }
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
