@@ -6,40 +6,46 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DemoControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function testIndexOnClientCreation()
     {
-        $client = static::createClient();
+        $client = static::createClient(array(), array(
+                'HTTP_HOST'       => 'en.example.com',
+                'HTTP_USER_AGENT' => 'MySuperBrowser/1.0',
+            )
+        );
 
-        $crawler = $client->request('GET', '/demo/hello/Fabien');
+        $crawler = $client->request('GET', '/demo/');
 
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Hello Fabien")')->count());
+        $this->assertEquals(0, $crawler->filter('html:contains("host: localhost")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("host: en.example.com")')->count());
     }
 
-    public function testSecureSection()
+    public function testIndexFromRequest()
     {
         $client = static::createClient();
 
-        // goes to the secure page
-        $crawler = $client->request('GET', '/demo/secured/hello/World');
+        $crawler = $client->request('GET', '/demo/', array(), array(), array(
+                'HTTP_HOST'       => 'en.example.com',
+                'HTTP_USER_AGENT' => 'MySuperBrowser/1.0',
+            )
+        );
 
-        // redirects to the login page
-        $crawler = $client->followRedirect();
+        $this->assertEquals(0, $crawler->filter('html:contains("host: localhost")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("host: en.example.com")')->count());
+    }
 
-        // submits the login form
-        $form = $crawler->selectButton('Login')->form(array('_username' => 'admin', '_password' => 'adminpass'));
-        $client->submit($form);
+    public function testIndexFromSetParameter()
+    {
+        $client = static::createClient();
 
-        // redirect to the original page (but now authenticated)
-        $crawler = $client->followRedirect();
+        $client->setServerParameters(array(
+                'HTTP_HOST'       => 'en.example.com',
+                'HTTP_USER_AGENT' => 'MySuperBrowser/1.0',
+            )
+        );
+        $crawler = $client->request('GET', '/demo/');
 
-        // check that the page is the right one
-        $this->assertCount(1, $crawler->filter('h1.title:contains("Hello World!")'));
-
-        // click on the secure link
-        $link = $crawler->selectLink('Hello resource secured')->link();
-        $crawler = $client->click($link);
-
-        // check that the page is the right one
-        $this->assertCount(1, $crawler->filter('h1.title:contains("secured for Admins only!")'));
+        $this->assertEquals(0, $crawler->filter('html:contains("host: localhost")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("host: en.example.com")')->count());
     }
 }
