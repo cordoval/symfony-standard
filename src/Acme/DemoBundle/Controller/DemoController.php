@@ -2,6 +2,8 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Acme\DemoBundle\Entity\User;
+use Acme\DemoBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,23 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return array();
+        $user = new User();
+        $user->addFavoriteColor('green');
+        $user->addFavoriteColor('');
+        $user->addFavoriteColor(array());
+
+        $form = $this->createForm(new UserType(), $user);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+        }
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
