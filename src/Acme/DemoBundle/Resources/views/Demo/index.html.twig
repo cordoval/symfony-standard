@@ -5,10 +5,36 @@
 {% block content_header '' %}
 
 {% block content %}
-    <h1 class="title">Available demos</h1>
-    <ul id="demo-list">
-        <li><a href="{{ path('_demo_hello', {'name': 'World'}) }}">Hello World</a></li>
-        <li><a href="{{ path('_demo_secured_hello', {'name': 'World'}) }}">Access the secured area</a> <a href="{{ path('_demo_login') }}">Go to the login page</a></li>
-        {# <li><a href="{{ path('_demo_contact') }}">Send a Message</a></li> #}
-    </ul>
+    {#{{ form_start(form, { 'attr': {'id':'registerForm', 'novalidate':''} }) }}#}
+
+    {#<div class="row">#}
+        {#<div class="small-6 columns form_margin">#}
+
+            {#<div class="row">#}
+                {#<div class="columns small-6">#}
+                    {#{{ form_label(form) }}#}
+                {#</div>#}
+                {#<div class="columns small-6">#}
+                    {#{{ form_widget(form) }}#}
+                    {#{{ form_errors(form) }}#}
+                {#</div>#}
+            {#</div>#}
+        {#</div></div>#}
+    {#{{ form_end(form) }}#}
+    {{ form_start(form, { 'attr': {'id':'registerForm', 'novalidate':''} }) }}
+
+    <div class="row">
+        <div class="small-6 columns form_margin">
+
+            <div class="row">
+                <div class="columns small-6">
+                    {{ form_label(form.security.email) }}
+                </div>
+                <div class="columns small-6">
+                    {{ form_widget(form.security.email) }}
+                    {{ form_errors(form.security.email) }}
+                </div>
+            </div>
+        </div></div>
+    {{ form_end(form) }}
 {% endblock %}
