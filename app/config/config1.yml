@@ -1,0 +1,5 @@
+twig:
+    paths:
+        "%kernel.root_dir%/Resources/test1": dir1
+        "%kernel.root_dir%/Resources/test3": dir3
+
