@@ -1,0 +1,3 @@
+cordoval_a_homepage:
+    pattern:  /a/
+    defaults: { _controller: CordovalABundle:Default:index }

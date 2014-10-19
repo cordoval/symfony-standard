@@ -1,0 +1,4 @@
+cordoval_a:
+    resource: "@CordovalABundle/Resources/config/routing.yml"
+    prefix:   /
+
